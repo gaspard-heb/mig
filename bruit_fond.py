@@ -345,3 +345,61 @@ print(param_gamma)
 print(param_alpha_a)
 print(param_alpha_c)
 print(param_gamma_prime)
+
+
+def affiche():
+    plt.scatter(range(1,len(param_gamma)+1),param_gamma,color='blue',marker='o',s=50,label='Gamma')
+    plt.scatter(range(1,len(param_gamma_prime)+1),param_gamma_prime,color='red',marker='s',s=50,label='Gamma prime')
+    plt.scatter(range(1,len(param_alpha_a)+1),param_alpha_a,color='green',marker='^',s=50,label='Alpha a')
+    plt.scatter(range(1,len(param_alpha_c)+1),param_alpha_c,color='purple',marker='D',s=50,label='Alpha c')
+    plt.legend()
+    plt.show()
+
+
+def affiche_bis():
+    fig,ax1=plt.subplots(figsize=(12,7))
+    ax2=ax1.twinx()
+    ax3=ax1.twinx()
+    ax3.spines['right'].set_position(('outward',65))
+
+    x_gamma=np.arange(1,len(param_gamma)+1)-0.04
+    x_gamma_prime=np.arange(1,len(param_gamma_prime)+1)+0.04
+    x_alpha_a=np.arange(1,len(param_alpha_a)+1)+0.08
+    x_alpha_c=np.arange(1,len(param_alpha_c)+1)
+
+    ax1.scatter(x_gamma,param_gamma,color='blue',marker='o',s=70,edgecolors='black',linewidths=0.7,alpha=0.8,label='Gamma',zorder=3)
+    ax1.scatter(x_gamma_prime,param_gamma_prime,color='red',marker='s',s=70,edgecolors='black',linewidths=0.7,alpha=0.8,label='Gamma prime',zorder=3)
+    ax2.scatter(x_alpha_a,param_alpha_a,color='green',marker='^',s=70,edgecolors='black',linewidths=0.7,alpha=0.8,label='Alpha a',zorder=3)
+    ax3.scatter(x_alpha_c,param_alpha_c,color='purple',marker='D',s=70,edgecolors='black',linewidths=0.7,alpha=0.8,label='Alpha c',zorder=3)
+
+    # Points spéciaux de Gamma prime (remplacent les carrés rouges classiques)
+    points_speciaux=[4,7,8]
+    for i in points_speciaux:
+        if i<=len(param_gamma_prime):
+            ax1.scatter(i+0.04,param_gamma_prime[i-1],color='darkred',marker='s',s=90,edgecolors='black',linewidths=1.2,zorder=4)
+
+    ax1.set_xlabel('Numéro échantillon plaque')
+    ax1.set_ylabel('Gamma / Gamma prime',color='blue')
+    ax2.set_ylabel('Alpha a',color='green')
+    ax3.set_ylabel('Alpha c',color='purple')
+    ax1.set_xticks(range(1,9))
+    ax1.set_xlim(0.5,8.5)
+    ax1.tick_params(axis='y',labelcolor='blue')
+    ax2.tick_params(axis='y',labelcolor='green')
+    ax3.tick_params(axis='y',labelcolor='purple')
+    ax1.grid(True,linestyle='--',alpha=0.35)
+
+    handles,labels=[],[]
+    for ax in [ax1,ax2,ax3]:
+        h,l=ax.get_legend_handles_labels()
+        handles+=h
+        labels+=l
+    ax1.legend(handles,labels,loc='best')
+    ax1.set_title("Paramètre de maille (10^-13m)")
+    plt.tight_layout()
+    plt.savefig("Résultat_RDX.png")
+    plt.show()
+
+
+#affiche()
+affiche_bis()
